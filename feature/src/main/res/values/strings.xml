@@ -6,6 +6,9 @@
     <string name="fuck">fuck</string>
     <string name="ahhhhhhh">AHHHHHHH</string>
     <string name="butts">butts</string>
+    <string name="length">Length</string>
+    <string name="mass">Mass</string>
+    <string name="volume">Volume</string>
 
     <string-array name="app_categories">
         <item >Kilometer</item>
