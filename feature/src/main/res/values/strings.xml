@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="convert">Convert!</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="fuck">fuck</string>
+    <string name="ahhhhhhh">AHHHHHHH</string>
+    <string name="butts">butts</string>
+
+    <string-array name="app_categories">
+        <item >Kilometer</item>
+        <item >Meter</item>
+        <item >Centimeter</item>
+        <item >Millimeter</item>
+        <item >Inches</item>
+        <item >Feet</item>
+        <item >Yards</item>
+        <item >Miles</item>
+    </string-array>
+</resources>

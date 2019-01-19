@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Unit Converter</string>
+    <string-array name="app_categories">
+        <item >Kilometer</item>
+        <item >Meter</item>
+        <item >Centimeter</item>
+        <item >Millimeter</item>
+        <item >Inches</item>
+        <item >Feet</item>
+        <item >Yards</item>
+        <item >Miles</item>
+    </string-array>
+
+</resources>
