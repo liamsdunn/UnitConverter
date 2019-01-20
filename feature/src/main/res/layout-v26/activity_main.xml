@@ -16,7 +16,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:onClick="onClick"
         android:text="@string/length"
+        android:backgroundTint="@android:color/holo_purple"
+
         app:layout_constraintBottom_toTopOf="@+id/FromSpinner"
         app:layout_constraintEnd_toStartOf="@+id/massButton"
         app:layout_constraintHorizontal_bias="1.0"
@@ -35,6 +38,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/volume"
+        android:backgroundTint="@android:color/holo_purple"
+
         app:layout_constraintBottom_toTopOf="@+id/FromSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -53,6 +58,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/mass"
+        android:backgroundTint="@android:color/holo_purple"
+
         app:layout_constraintBottom_toTopOf="@+id/FromSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -96,11 +103,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/convert"
+        android:backgroundTint="@android:color/holo_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ToSpinner"
-        app:layout_constraintVertical_bias="0.391" />
+        app:layout_constraintVertical_bias="0.176" />
+
 
     <EditText
         android:id="@+id/Display"

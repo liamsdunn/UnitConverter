@@ -10,18 +10,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import static android.R.*;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private static String len = "Length", mass = "Mass", vol = "Volume";
-    private HashMap<String,Double> lengthTable, massTable, volumeTable;
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        View.OnClickListener {
+    private final static String len = "Length", mass = "Mass", vol = "Volume";
+    private static HashMap<String,Double> lengthTable, massTable, volumeTable;
     private String fromUnit, toUnit, state;
     private EditText amount;
     private Spinner fromSpinner, toSpinner;
-    private Button convertButton, massButton;
-    private String[] current_menu, lengthMenu, massMenu;
+    private Button convertButton, massButton, lengthButton, volumeButton;
+    private String[] current_menu, lengthMenu, massMenu, volumeMenu;
     private ArrayAdapter<String> toAdapter, fromAdapter;
 
     @Override
@@ -32,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         this.setMaps();
         amount = findViewById(R.id.Display);
+        amount.setText(String.valueOf(0));
+
 
 //        FromAdapter Section
-
         fromSpinner = findViewById(R.id.FromSpinner);
         fromAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, current_menu);
         fromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -50,50 +54,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 //        If Button is clicked here, this stuff fires
         massButton = findViewById(R.id.massButton);
-        massButton.setOnClickListener(new View.OnClickListener() {
+        massButton.setOnClickListener(this);
 
-//           THis is where we convert the value in he edit text with spinner.
-            @Override
-            public void onClick(View arg0){
-                String[] test = massTable.keySet().toArray(new String[lengthTable.size()]);
-                for (int i = 0; i < current_menu.length; i++){
-                    current_menu[i] = test[i];
-                }
+        lengthButton = findViewById(R.id.lengthButton);
+        lengthButton.setOnClickListener(this);
 
-                state = mass;
-                toAdapter.notifyDataSetChanged();
-                fromAdapter.notifyDataSetChanged();
-                toSpinner.setAdapter(toAdapter);
-                fromSpinner.setAdapter(fromAdapter);
-            }
-        });
+        volumeButton = findViewById(R.id.volumeButton);
+        volumeButton.setOnClickListener(this);
 
         convertButton = findViewById(R.id.ConvertButton);
-        convertButton.setOnClickListener(new View.OnClickListener() {
-
-            //           THis is where we convert the value in he edit text with spinner.
-            @Override
-            public void onClick(View arg0){
-                double converted_amount = Double.valueOf(amount.getText().toString());
-
-                switch(state){
-                    case "Length":
-                        converted_amount *= lengthTable.get(fromUnit)/lengthTable.get(toUnit);
-                        break;
-
-                    case "Mass":
-                        converted_amount *= massTable.get(fromUnit)/massTable.get(toUnit);
-                        break;
-
-                    default:
-                        break;
-                }
-
-                amount.setText(String.valueOf(converted_amount));
-
-//
-            }
-        });
+        convertButton.setOnClickListener(this);
     }
 
     @Override
@@ -112,22 +82,69 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         toUnit = "Kilometer";
     }
 
-    public void setMenu(){
+    @Override
+    public void onClick(View v) {
 
-        switch(state) {
-            case "Length": current_menu = current_menu;
-            break;
+        int id = v.getId();
 
-            case "Mass": current_menu = current_menu;
-            break;
+        if (id == R.id.ConvertButton) {
+            double converted_amount = Double.valueOf(amount.getText().toString());
+            switch (state) {
+                case len:
+                    converted_amount *= lengthTable.get(fromUnit) / lengthTable.get(toUnit);
+                    break;
 
-            case "Volume": current_menu = current_menu;
-            break;
+                case mass:
+                    converted_amount *= massTable.get(fromUnit) / massTable.get(toUnit);
+                    break;
+                case vol:
+                    converted_amount *= volumeTable.get(fromUnit) / volumeTable.get(toUnit);
+                    break;
 
-            default: current_menu = current_menu;
-            break;
+                default:
+                    break;
+            }
+            DecimalFormat df = new DecimalFormat("#.#####");
+            df.setRoundingMode(RoundingMode.CEILING);
+            amount.setText(String.valueOf(df.format(converted_amount)));
+
+        } else {
+
+            if (id == R.id.lengthButton) {
+
+                for (int i = 0; i < current_menu.length; i++) {
+                    current_menu[i] = lengthMenu[i];
+                }
+                state = len;
+                toAdapter.notifyDataSetChanged();
+                fromAdapter.notifyDataSetChanged();
+                toSpinner.setAdapter(toAdapter);
+                fromSpinner.setAdapter(fromAdapter);
+
+            } else if (id == R.id.massButton) {
+
+                for (int i = 0; i < current_menu.length; i++) {
+                    current_menu[i] = massMenu[i];
+                }
+                state = mass;
+                toAdapter.notifyDataSetChanged();
+                fromAdapter.notifyDataSetChanged();
+                toSpinner.setAdapter(toAdapter);
+                fromSpinner.setAdapter(fromAdapter);
+
+            } else if (id == R.id.volumeButton) {
+
+                for (int i = 0; i < current_menu.length; i++) {
+                    current_menu[i] = volumeMenu[i];
+                }
+                state = vol;
+                toAdapter.notifyDataSetChanged();
+                fromAdapter.notifyDataSetChanged();
+                toSpinner.setAdapter(toAdapter);
+                fromSpinner.setAdapter(fromAdapter);
+            }
+
         }
-
     }
 
     private void setMaps(){
@@ -152,23 +169,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         massTable.put("Pound", 453.592);
         massTable.put("Ton", 907185.0);
 
+        volumeTable = new HashMap<String,Double>();
+        volumeTable.put("Kiloliter", 1000.0);
+        volumeTable.put("Liter", 1.0);
+        volumeTable.put("Centiliter", 0.01);
+        volumeTable.put("Milliliter", 0.001);
+        volumeTable.put("Cup", 0.236588);
+        volumeTable.put("Pint", 0.473176);
+        volumeTable.put("Quart", 0.946353);
+        volumeTable.put("Gallon", 3.78541);
+
         current_menu = lengthTable.keySet().toArray(new String[lengthTable.size()]);
         lengthMenu = lengthTable.keySet().toArray(new String[lengthTable.size()]);
         massMenu = massTable.keySet().toArray(new String[massTable.size()]);
+        volumeMenu = volumeTable.keySet().toArray(new String[volumeTable.size()]);
         state = len;
-
     }
-
-
-
-
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//
-//
-//        adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
-//        fromSpinner.setAdapter(adapter);
-//    }
-
-
-
 }
